@@ -1,0 +1,133 @@
+<!doctype html>
+<html>
+
+<head>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+    
+
+    <script type="text/javascript">
+        var rowLength = 5;
+        var spData = null;
+        var msData=[];
+        function doData(json) {
+            spData = json.feed.entry;
+
+            //msData=Create2DArray(spData.length/5);
+            
+            //console.log(">> "+ spData[1]["gs$cell"]["$t"]);
+            console.log(spData.length);
+            var t=0;
+            for(var k=5; k<spData.length-5; k=k+5){
+                //msData.push(spData[k]["gs$cell"]["$t"]);
+               // console.log(t+ " " + k );
+               var icArray= [spData[k]["gs$cell"]["$t"],spData[k+1]["gs$cell"]["$t"],spData[k+2]["gs$cell"]["$t"], spData[k+3]["gs$cell"]["$t"] , spData[k+4]["gs$cell"]["$t"]];
+                //msData.push( spData[k]["gs$cell"]["$t"] + "," +spData[k+1]["gs$cell"]["$t"] + spData[k+2]["gs$cell"]["$t"] + spData[k+3]["gs$cell"]["$t"] + spData[k+4]["gs$cell"]["$t"] );
+               msData.push(icArray);
+                // if(k%5==0 && k>4){ 
+                //     t++;
+                //     }
+            }
+           // spData=null;
+            // spData = (spData).filter(function (entry) {
+            //     //console.log(">> "+ entry["gs$cell"]["$t"]);
+            //     msData.push(entry["gs$cell"]["$t"]);
+            //     return null;
+            // });
+        }
+        //     function Create2DArray(rows) {
+        //     var arr = [];
+
+        //     for (var i=0;i<rows;i++) {
+        //         arr[i] = [];
+        //     }
+
+        //     return arr;
+        //     }
+        // function drawCell(tr, val) {
+        //     var td = $("<td/>");
+        //     tr.append(td);
+        //     td.append(val);
+        //     return td;
+        // }
+        // function drawRow(table, rowData) {
+        //     if (rowData == null) return null;
+        //     if (rowData.length == 0) return null;
+            
+        //     var tr = $("<tr/>");
+        //     table.append(tr);
+        //     // console.log("rowdatalength  " + rowData.length);
+        //     // console.log(rowData);
+
+        //     for (var c = 0; c < rowLength; c++) {
+        //         // console.log(c + " " + rowData[c]);
+        //         // if (rowData[c] == undefined) {
+        //         //     drawCell(tr, "")
+        //         // } else {
+        //             drawCell(tr, rowData[c]);
+        //         // }
+        //     }
+        //     return tr;
+        // }
+
+        // function drawTable(parent) {
+        //     var table = $("<table id='myTable' />");
+        //     parent.append(table);
+        //     return table;
+        // }
+        
+        function readData(parent) {
+           // var data = msData;
+           $('#example').DataTable( {
+        data: msData,
+        columns: [
+            { title: "Date" },
+            { title: "Client" },
+            { title: "Product" },
+            { title: "Units" },
+            { title: "Bonus" }
+        ]
+    } );
+           
+
+        }
+   
+        $(document).ready(function () {
+           readData($("#data"));
+            // $("#myInput").on("keyup", function () {
+            // //    $('#myTable').DataTable();
+
+            //     var value = $(this).val().toLowerCase();
+            //     // console.log(value);
+            //     //var rex = new RegExp($(this).val(), 'i');
+            //     // var $t = $(this).children(":eq(4))");
+            //     //$('.myTable tr ').hide();
+            //     $("#myTable tr").filter(function () {
+            //         //console.log($(this));
+            //         // var haci= $(this).children()
+            //         $(this).toggle($(this).children().eq(1).text().toLowerCase().indexOf(value) > -1)
+            //         // var $t = $(this).children(":eq(" + "1" + ")");
+            //         //return rex.test($t.text());
+            //     });
+
+
+            // });
+        });
+
+    </script>
+    <!-- <script src="https://spreadsheets.google.com/feeds/cells/1aebXgzEJSeNEZp76-cS_-aTEY_vNSKPEKi6fy4ztzLA/1/public/values?alt=json-in-script&callback=doData&?return-empty=true&min-row=1&max-row=10"></script> -->
+    <script src="https://spreadsheets.google.com/feeds/cells/198kedoe2gSz0pRA-N56HtFl6lNONMBTvJ-F-GbWMmis/1/public/values?alt=json-in-script&callback=doData"></script>
+    
+</head>
+
+<body>
+    <img src="./vitalitylogo.jpg" width="20%" height="20%" alt="">
+    <h1>Vitality Brain-Sale</h1>
+    <br>
+    <br>
+    <table id="example" class="display" width="100%"></table>
+    <div style="overflow-x:auto;" id="data" />
+</body>
+
+</html>
